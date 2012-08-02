@@ -14,9 +14,9 @@ Ein Zikula lässt sich im Prinzip mit jedem blibigen Text-Editor erstellen. Deno
 Guten Code programmieren (Coding-Standards)
 -------------------------------------------
 
-Wenn mehrere Programmierer an einem Projekt arbeiten ist es meist sinnvoll Regeln zur Code-Formartierung aufzustellen. Dadruch bleibt der Code einheitlicher und somit einfach zu lesen. In den Regeln wird zum Beispiel definiert ob Tabulatoren oder Leeschläge verwendet werden sollen.
+Wenn mehrere Programmierer an einem Projekt arbeiten ist es meist sinnvoll Regeln zur Code-Formartierung aufzustellen. Dadruch ist der Code einheitlich und somit einfacher zu lesen. In den Regeln wird zum Beispiel definiert ob Tabulatoren oder Leerschläge verwendet werden sollen.
 
-Zikula besitzt ein solches Regelwerk. Das Regelwerk wird auch von den meisten Zikula-Modulen verwendet. Die so genannten Coding-Standards befinden sich auf der Zikua-Core Projektseite bei GitHub: https://github.com/zikula/core/wiki/Coding-Standards
+Zikula-Core besitzt ein solches Regelwerk, welches auch von den meisten Zikula-Modulen verwendet wird. Die so genannten Coding-Standards befinden sich auf der Zikua-Core Projektseite bei GitHub: https://github.com/zikula/core/wiki/Coding-Standards
 
 Zu einem guten Code gehört auch desen Dokumentation. Unter dem Kapitel Docblock finden sich auch dazu Beispiele in den Zikula Coding-Standards.
 
