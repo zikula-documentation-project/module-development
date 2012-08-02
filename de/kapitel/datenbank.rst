@@ -11,9 +11,9 @@ Bei Doctrine2 müssen wie schon bei DBUtil in der tables.php die Datenbanken def
 .. code-block:: php
 
     <?php
-    
+
     use Doctrine\ORM\Mapping as ORM;
-    
+
     /**
      * Persons entity class.
      *
@@ -24,7 +24,7 @@ Bei Doctrine2 müssen wie schon bei DBUtil in der tables.php die Datenbanken def
      */
     class ExampleModule_Entity_Persons extends Zikula_EntityAccess
     {
-    
+
         /**
          * The following are annotations which define the id field.
          *
@@ -33,86 +33,67 @@ Bei Doctrine2 müssen wie schon bei DBUtil in der tables.php die Datenbanken def
          * @ORM\GeneratedValue(strategy="AUTO")
          */
         private $id;
-    
-        
+
+
         /**
          * The following are annotations which define the name field.
          *
          * @ORM\Column(type="string", length="255")
          */
         private $name;
-        
-        
+
+
         /**
          * The following are annotations which define the birthday field.
-         * 
+         *
          * @ORM\Column(type="datetime")
          */
         private $birthday;
-        
-        
+
+
         /**
          * The following are annotations which define the married field.
-         * 
+         *
          * @ORM\Column(type="boolean")
          */
         private $married = false;
-        
-    
+
+
         public function getId()
         {
             return $this->id;
         }
-        
+
         public function getName()
         {
             return $this->name;
         }
-        
+
         public function getBirthday()
         {
             return $this->birthday;
         }
-        
-        public function gettopic_status()
+
+        public function getMarried()
         {
-            return $this->topic_status;
+            return $this->married;
         }
-        
-        
-        public function gettopic_time()
-        {
-            return $this->topic_time;
-        }
-        
-        
-        public function getMaried()
-        {
-            return $this->maried;
-        }
-    
-    
-        public function gettopic_views()
-        {
-            return $this->topic_views;
-        }
-        
-           
+
         public function setName($name)
         {
             $this->name = $name;
         }
-        
+
         public function setBirthday($birthday)
         {
-            $this->birthday = $birthday;
+            $this->birthday = new DateTime($birthday);
         }
-        
+
         public function setMarried($married)
         {
             $this->married = $married;
         }
-    
+
     }
 
 
@@ -168,6 +149,23 @@ Nun können wir Zikula die Datenbank erstellen lassen. Meistens lässt man den I
             // Initialisation successful.
             return true;
         }
+
+
+        /**
+         * Upgrade the errors module from an old version
+         *
+         * This function must consider all the released versions of the module!
+         * If the upgrade fails at some point, it returns the last upgraded version.
+         *
+         * @param  string $oldVersion   version number string to upgrade from
+         *
+         * @return mixed  true on success, last valid version string or false if fails
+         */
+        public function upgrade($oldversion)
+        {
+            // Update successful
+            return true;
+        }
     
     
         /**
@@ -180,7 +178,7 @@ Nun können wir Zikula die Datenbank erstellen lassen. Meistens lässt man den I
          */
         public function uninstall()
         {
-             // Drop database tables
+            // Drop database tables
             DoctrineHelper::dropSchema($this->entityManager, array(
                 'ExampleModule_Entity_Persons'
             ));
@@ -293,7 +291,6 @@ Zusammen mit den Bereits oben erstellen Datei Persons.php und dem modifizierten 
                 return LogUtil::registerPermissionError();
             }
         
-            $name = Joe Bloggs';
             $em = $this->getService('doctrine.entitymanager');
             $qb = $em->createQueryBuilder();
             $qb->select('p')
@@ -311,27 +308,33 @@ Zusammen mit den Bereits oben erstellen Datei Persons.php und dem modifizierten 
 .. code-block:: smarty
 
     <h3>{gt text='List of all persons'}</h3>
-    
-    <a href="{modurl modname="ExampleModule" type="user" func="edit"}">{gt text='New person'}</a>
-    
+
+    <p>
+        <a href="{modurl modname="ExampleModule" type="user" func="edit"}">{gt text='Add person'}</a>
+    </p>
+
     {insert name="getstatusmsg"}
 
     <table class="z-datatable">
         <thead>
-            <tr>
-                <th>{gt text='Name'}</th>
-                <th>{gt text='Actions'}</th>
-            </tr>
+        <tr>
+            <th>{gt text='Name'}</th>
+            <th>{gt text='Actions'}</th>
+        </tr>
         </thead>
-        <tbody> 
-            {foreach form=$persons item=$person}
-            <tr class="{cycle values="z-odd,z-even"}">
-                <td>$person.name</td>
-                <td><a href="{modurl modname='ExampleModule' type='user' func='edit' id=$person.id}">Edit</td>
-            </tr>
-            {/foreach}
+        <tbody>
+        {foreach from=$persons item='person'}
+        <tr class="{cycle values='z-odd,z-even'}">
+            <td>{$person.name}</td>
+            <td><a href="{modurl modname='ExampleModule' type='user' func='edit' id=$person.id}">Edit</td>
+        </tr>
+        {foreachelse}
+        <tr class="{cycle values="z-odd,z-even"}">
+            <td colspan=2>{gt text='No entires available!'}</td>
+        </tr>
+        {/foreach}
         </thead>
-     </table>
+    </table>
         
 Nun fügen wir nach der main noch eine Bearbeitenfunktion hinzu:    
         
@@ -368,15 +371,15 @@ Der Handler sieht wie folgt aus:
      * Please see the NOTICE file distributed with this source code for further
      * information regarding copyright and licensing.
      */
-    
+
     /**
      * Form handler for create and edit.
      */
     class ExampleModule_Handler_Edit extends Zikula_Form_AbstractHandler
     {
-        
+
         private $person;
-    
+
         /**
          * Setup form.
          *
@@ -391,20 +394,21 @@ Der Handler sieht wie folgt aus:
             if ($id) {
                 // load user with id
                 $this->person = $this->entityManager->find('ExampleModule_Entity_Persons', $id);
-    
-                if (!$person) {
+
+                if (!$this->person) {
                     return LogUtil::registerError($this->__f('Person with id %s not found', $id));
                 }
+
+                $view->assign($this->person->toArray());
             } else {
-                $this->person = new ExampleDoctrine_Entity_User();
+                $this->person = new ExampleModule_Entity_Persons();
             }
-    
-            
+
+
             // assign current values to form fields
-            $view->assign($this->person->toArray());            
             return true;
         }
-    
+
         /**
          * Handle form submission.
          *
@@ -415,26 +419,26 @@ Der Handler sieht wie folgt aus:
          */
         public function handleCommand(Zikula_Form_View $view, &$args)
         {
-            $url = ModUtil::url('ExampleModule', 'admin', 'main' );
+            $url = ModUtil::url('ExampleModule', 'user', 'main' );
             if ($args['commandName'] == 'cancel') {
                 return $view->redirect($url);
             }
-            
-            
+
+
             // check for valid form
             if (!$view->isValid()) {
                 return false;
             }
-    
+
             // load form values
             $data = $view->getValues();
-            
+
 
             // merge user and save everything
             $this->person->merge($data);
             $this->entityManager->persist($this->person);
             $this->entityManager->flush();
-    
+
             return $view->redirect($url);
         }
     }
@@ -445,41 +449,36 @@ Zu guter Letzt noch das Bearbeiten-Template:
 
 .. code-block:: smarty
 
-    {adminheader}
-    <div class="z-admin-content-pagetitle">
-        {icon type="config" size="small"}
-        <h3>{gt text="Modify person"}</h3>
-    </div>
-    
+    <h3>{gt text="Modify person"}</h3>
+
     {form cssClass="z-form"}
     {formvalidationsummary}
-    
-    <fieldset>        
-        
-        <div class="z-formrow">
-            {formlabel for="name" __text='Name'}
-            {formtextput id="name"}
+
+        <fieldset>
+
+            <div class="z-formrow">
+                {formlabel for="name" __text='Name'}
+                {formtextinput id="name" maxLength=255 mendatory=true}
+            </div>
+
+            <div class="z-formrow">
+                {formlabel for="birthday" __text='Birthday'}
+                {formdateinput id="birthday" medatory=true}
+            </div>
+
+        </fieldset>
+
+        <div class="z-formbuttons z-buttons">
+            {formbutton class="z-bt-ok" commandName="save" __text="Save"}
+            {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
         </div>
-        
-        <div class="z-formrow">
-            {formlabel for="birthday" __text='Birthday'}
-            {formdateput id="birthday" medatory=true}
-        </div>
-        
-    </fieldset>
-            
-    <div class="z-formbuttons z-buttons">
-        {formbutton class="z-bt-ok" commandName="save" __text="Save"}
-        {formbutton class="z-bt-cancel" commandName="cancel" __text="Cancel"}
-    </div>
-            
+
     {/form}
-    
-    {adminfooter}
 
+.. note::
 
-        
-    
+    Das Beispielmodul mit dem aktuellen Stand gibt es `hier <./../../examples/doctrineExample.zip>`_.
+
 Weitere Informationen
 ---------------------
 

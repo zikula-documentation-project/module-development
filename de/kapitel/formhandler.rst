@@ -129,7 +129,7 @@ FormHandler vereinfachen die Handhabung von HTML-Formularen. Im folgenden ein Be
         <legend>{gt text='General settings'}</legend>
         <div class="z-formrow">
             {formlabel for="itemsPerPage" __text='Item per page'}
-            {formintput id="itemsPerPage" medatory=true}
+            {formintput id="itemsPerPage" mendatory=true}
             <em class="z-formnote z-sub">{gt text="Number of items per page"}</em>
         </div>
         

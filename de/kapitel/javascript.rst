@@ -29,3 +29,31 @@ Neben der direkten Einbindung können auch exterene Javascript-Dateien eingebund
 .. code-block:: smarty
   
     {pageaddvar name='javascript' value='modules/ExampleModule/javascript/test.js'}
+
+Benutzung von Prototype
+-----------------------
+
+.. code-block:: smarty
+
+    <div id='test'>Test div.</div>
+    {pageaddvar name='javascript' value='prototype'}
+    <script type="text/javascript">
+        var newElement = new Element( 'p' );
+        newElement.update('Text was inserted by Prototype.');
+        $('test').insert ({'after': newElement} );
+    </script>
+
+
+Benutzung von jQuery
+--------------------
+
+Statt dem überlichen ``$`` muss ein ``jQuery`` verwendet werden:
+
+.. code-block:: smarty
+
+    <div id='test'>Test div.</div>
+    {pageaddvar name='javascript' value='jquery'}
+    <script type="text/javascript">
+        jQuery('<p>Text was inserted by jQuery.</p>').insertAfter('#test');
+    </script>
+
