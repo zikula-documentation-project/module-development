@@ -1,6 +1,9 @@
 Einen Admin-Bereich anlegen
 ===========================
 
+Admin-Seiten
+------------
+
 Das Anlegen eines Admin-Bereichs ist sehr ähnlich zum anlegen einer normalen Seite. Zunächst müssen wir einen Admin-Controller anlegen:
 
 ``modules/ExampleModule/lib/ExampleModule/Controller/Admin.php``
@@ -33,7 +36,7 @@ Das Anlegen eines Admin-Bereichs ist sehr ähnlich zum anlegen einer normalen Se
          */
         public function main()
         {
-            return 'Hello World 1';
+            return $this->view->fetch('admin/main.tpl');
         }
         
         /**
@@ -43,13 +46,44 @@ Das Anlegen eines Admin-Bereichs ist sehr ähnlich zum anlegen einer normalen Se
          */
         public function main2()
         {
-            return 'Hello World 2';
+            return $this->view->fetch('admin/main2.tpl');
         }
     }
 
+``modules/ExampleModule/templates/user/main.tpl``
+
+.. code-block:: smarty
+
+    {adminheader}
+
+    <div class="z-admin-content-pagetitle">
+        {icon type="config" size="small"}
+        <h3>{gt text="Hello world 1"}</h3>
+    </div>
+    {gt text="Hello world 1"}
+
+    {adminfooter}
+
+``modules/ExampleModule/templates/user/main2.tpl``
+
+.. code-block:: smarty
+
+    {adminheader}
+
+    <div class="z-admin-content-pagetitle">
+        {icon type="config" size="small"}
+        <h3>{gt text="Hello world 2"}</h3>
+    </div>
+    {gt text="Hello world 2"}
+
+    {adminfooter}
+
 Die Seiten sind nun unter http://localhost/index.php?module=ExampleModule&type=admin&func=main und http://localhost/index.php?module=ExampleModule&type=admin&func=main2 erreichbar.
 
-Damit wir zwischen den beiden Seiten auch per Klick hin und her wechseln können wir eine Admin-Bar. Die Admin-Bar können wir als Funktion in der Admin API anlegen:
+Die Admin Bar
+-------------
+
+Damit wir zwischen den beiden Seiten auch per Klick hin und her wechseln können brauchen wir eine Admin-Bar. Die Admin-Bar können wir als Funktion in der Admin API anlegen:
 
 ``modules/ExampleModule/lib/ExampleModule/Api/Admin.php``
 
@@ -72,7 +106,7 @@ Damit wir zwischen den beiden Seiten auch per Klick hin und her wechseln können
     /**
      * This is the User controller class providing navigation and interaction functionality.
      */
-    class ExampleModule_Api_Admin extends Zikula_AbstractController
+    class ExampleModule_Api_Admin extends Zikula_AbstractApi
     {
         /**
          * get available admin panel links
@@ -82,26 +116,31 @@ Damit wir zwischen den beiden Seiten auch per Klick hin und her wechseln können
         public function getlinks()
         {
             $links = array();
-            if (SecurityUtil::checkPermission('Dizkus::', '::', ACCESS_ADMIN)) {
+            if (SecurityUtil::checkPermission('ExampleModule::', '::', ACCESS_ADMIN)) {
                 $links[] = array(
-                            'url'   => ModUtil::url('Dizkus', 'admin', 'tree'),
-                            'text'  => $this->__('Edit forum tree'),
-                            'title' => $this->__('Create, delete, edit and re-order categories and forums'),
-                            'links' => array(
-                             array(
-                                 'url'   => ModUtil::url('Dizkus', 'admin', 'main'),
-                                 'text'  => $this->__('Hello World 1'),
-                                 'title' => $this->__('Hello World 1'),
-                                 'class' => 'z-icon-es-help',
-                             ),
-                              array(
-                                 'url'   => ModUtil::url('Dizkus', 'admin', 'main2'),
-                                 'text'  => $this->__('Hello World 2'),
-                                 'title' => $this->__('Hello World 2'),
-                                 'class' => 'z-icon-es-config',
-                             )
-                           )
-                          );
+                            'url'   => ModUtil::url('ExampleModule', 'admin', 'main'),
+                            'text'  => $this->__('Hello World 1'),
+                            'title' => $this->__('Hello World 1'),
+                            'class' => 'z-icon-es-help',
+                           );
+                $links[] = array(
+                            'url'   => ModUtil::url('ExampleModule', 'admin', 'main2'),
+                            'text'  => $this->__('Hello World 2'),
+                            'title' => $this->__('Hello World 2'),
+                            'class' => 'z-icon-es-config',
+                           );
             }
             return $links;
         }
+    }
+
+ .. note::
+
+     Das Beispielmodul mit dem aktuellen Stand gibt es `hier <./../../examples/adminExample.zip>`_.
+
+Das Modul-Icon
+--------------
+
+Damit im Admin-Bereich das Modul ein Icon erhält müssen wir eine PNG Datei an folgenden Ort kopieren:
+
+``modules/ExampleModule/images/admin.png``
