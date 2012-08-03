@@ -16,7 +16,7 @@ Wenn wir Styles anlegen wollen, die auf jeder Seite des Modules zut Verfügung s
         border-color:red;
     }
 
-``modules/ExampleModule/templates/user/main.tpl``
+``modules/ExampleModule/templates/user/example1.tpl``
 
 .. code-block:: smarty
 
@@ -39,7 +39,7 @@ Spezifische Stylesheets können wie Javascript-Dateien mittels pageaddvar in Sma
         border-color:blue;
     }
 
-``modules/ExampleModule/templates/user/main2.tpl``
+``modules/ExampleModule/templates/user/example2.tpl``
 
 .. code-block:: smarty
 
@@ -54,13 +54,13 @@ Alternativ können Stylesheets auch aus PHP heraus geladen werden:
 
 .. code-block:: php
 
-    public function main3()
+    public function example3()
     {
         PageUtil::addVar('stylesheet', 'modules/ExampleModule/style/blue.css');
-        return $this->view->fetch('user/main3.tpl');
+        return $this->view->fetch('user/example3.tpl');
     }
 
-``modules/ExampleModule/templates/user/main3.tpl``
+``modules/ExampleModule/templates/user/example3.tpl``
 
 
 .. code-block:: smarty

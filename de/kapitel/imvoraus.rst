@@ -20,9 +20,9 @@ Zikula-Core besitzt ein solches Regelwerk, welches auch von den meisten Zikula-M
 
 Zu einem guten Code gehört auch desen Dokumentation. Unter dem Kapitel Docblock finden sich auch dazu Beispiele in den Zikula Coding-Standards.
 
-Lizenz
-------
+Das eigene Module als OpenSource veröffentlichen
+------------------------------------------------
 
-Wenn man sein Modul der Allgemeinheit als OpenSource zugänglich machen will stellt sich die Frage der Lizenz. Die drei häufigsten Lizenzen die von Zikula Modulen verwenden sind die `GPL <http://de.wikipedia.org/wiki/GNU_General_Public_License>`_, `LGPL <http://de.wikipedia.org/wiki/Lesser_General_Public_License>`_ und die `BSD-Lizenz <http://de.wikipedia.org/wiki/BSD-Lizenz>`_.
+Wenn man sein Modul der Allgemeinheit als OpenSource zugänglich machen will stellt sich die Frage der Lizenz. Die drei häufigsten Lizenzen die von Zikula Modulen verwenden sind die `GPL <http://de.wikipedia.org/wiki/GNU_General_Public_License>`_, `LGPL <http://de.wikipedia.org/wiki/Lesser_General_Public_License>`_ und die `BSD-Lizenz <http://de.wikipedia.org/wiki/BSD-Lizenz>`_. Zikula Core steht unter der LGPL.
 
-Zikula Core steht unter der LGPL.
+Als Platz zum Veröffentlichen bietet sich GitHub an. GitHub ist ein Git-Repository welches das kolaborative Arbeiten ermöglicht.

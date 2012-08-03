@@ -41,13 +41,29 @@ class ExampleModule_Controller_User extends Zikula_AbstractController
 
     public function example2()
     {
+        $this->view->assign('text', 'Hello World');
         return $this->view->fetch('user/example2.tpl');
     }
 
     public function example3()
     {
-        PageUtil::addVar('stylesheet', 'modules/ExampleModule/style/blue.css');
         return $this->view->fetch('user/example3.tpl');
+    }
+
+    public function example4()
+    {
+        PageUtil::addVar('javascript', 'modules/ExampleModule/javascript/test.js');
+        return $this->view->fetch('user/example4.tpl');
+    }
+
+    public function example5()
+    {
+        return $this->view->fetch('user/example5.tpl');
+    }
+
+    public function example6()
+    {
+        return $this->view->fetch('user/example6.tpl');
     }
 
 }

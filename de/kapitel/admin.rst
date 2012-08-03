@@ -134,6 +134,15 @@ Damit wir zwischen den beiden Seiten auch per Klick hin und her wechseln können
         }
     }
 
+Die Admin-Bar-Einträge haben folgende Werte:
+
+* ``url``: Die Ziel-URL
+* ``id``: Das ID Attribut des Link-Tags (<a>)
+* ``text``: Der Link text
+* ``title``: Der Titel des Link-Tags (<a>)
+* ``disabled``: Verunmöglicht das Anklicken des Links.
+* ``linebreak``: Fügt einen Zeilenumbruch nach dem Link ein.
+
  .. note::
 
      Das Beispielmodul mit dem aktuellen Stand gibt es `hier <./../../examples/adminExample.zip>`_.
