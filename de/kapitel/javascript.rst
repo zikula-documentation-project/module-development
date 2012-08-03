@@ -57,3 +57,6 @@ Statt dem überlichen ``$`` muss ein ``jQuery`` verwendet werden:
         jQuery('<p>Text was inserted by jQuery.</p>').insertAfter('#test');
     </script>
 
+.. note::
+
+    Das Beispielmodul mit dem aktuellen Stand gibt es `hier <./../../examples/javascriptExample.zip>`_.
